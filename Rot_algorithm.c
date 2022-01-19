@@ -54,12 +54,15 @@ void Rot(char* string, char* outcome){
             // *(arrName) gives the value of the first element, so to retrieve all the values write *(arrName+i) and increment i
             // till i is lesser than length of the arrName-1 (possible for both array and string literal) 
             // or until *(arrName+i) 'or' arrName[i] is '\0'[NULL] character (this method is only for string literal)
-            if((*(string+i) >=65 && *(string+i) <=90) && *(string+i)+rotValue >90)
+            if((*(string+i) >=32 && *(string+i) <=64) || (*(string+i) >=91 && *(string+i) <=96) || (*(string+i) >=123 && *(string+i) <=126)){
+                *(outcome+i) = *(string+i);
+            }else if((*(string+i) >=65 && *(string+i) <=90) && *(string+i)+rotValue >90)
                 *(outcome+i) = (*(string+i)+rotValue)-LET;         
             else if((*(string+i)>=97 && *(string+i)<=122) && *(string+i)+rotValue >122)
                 *(outcome+i) = (*(string+i)+rotValue)-LET;
             else
                 *(outcome+i) = *(string+i)+rotValue;
+        }
         *(outcome+i) = '\0';
 
     }
@@ -67,15 +70,16 @@ void Rot(char* string, char* outcome){
 
         int i;
         for (i = 0; i < (Strlen(string)-1); i++){
-
-            if((*(string+i) >=65 && *(string+i) <=90) && *(string+i)-rotValue <65)
+            if((*(string+i) >=32 && *(string+i) <=64) || (*(string+i) >=91 && *(string+i) <=96) || (*(string+i) >=123 && *(string+i) <=126)){
+                *(outcome+i) = *(string+i);
+            }else if((*(string+i) >=65 && *(string+i) <=90) && *(string+i)-rotValue <65)
                 *(outcome+i) = (*(string+i)-rotValue)+LET;          
             else if((*(string+i) >=97 && *(string+i)<=122) && *(string+i)-rotValue<97)
                 *(outcome+i) = (*(string+i)-rotValue)+LET;
             else
                 *(outcome+i) = *(string+i)-rotValue;        
+        }
         *(outcome+i) = '\0';
-
     }
 }
 
