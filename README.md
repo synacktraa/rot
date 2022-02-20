@@ -9,7 +9,7 @@ gcc rotcipher.c -o rc
 ```
 ---
 Ask For Help:
-```lua
+```powershell
 rc -h 'or' rc --help
 ```
 Output:
@@ -27,7 +27,7 @@ Usage: rc.exe <string> --<mode> --<rotval>
 ```
 ---
 ## Encryption:
-```lua
+```powershell
 rc "Hack Teh World!" --encrypt --rot10
 ```
 Output:
@@ -36,7 +36,7 @@ Rkmu Dor Gybvn!
 ```
 ---
 ## Decryption:
-```lua
+```powershell
 vc "Rkmu Dor Gybvn!" --decrypt --rot10 
 ```
 Output:
