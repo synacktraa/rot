@@ -157,7 +157,9 @@ int main(int argc, char*argv[]){
     }else if(argc == 4){
         Rot(argv[1], argv[2], argv[3]);
     } else{
-        fprintf(stderr, "\nUsage: %s <string> --<mode> --<rotval>\n", argv[0]);
+        fprintf(stderr, "\nUsage: %s <string> --<mode> --<rotval>\
+        \nFor more, check help section:\
+        \n    %s --help 'or' -h", argv[0], argv[0]);
         return 1;
     }
 
