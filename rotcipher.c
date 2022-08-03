@@ -1,49 +1,20 @@
 #include<stdio.h>
+#include <string.h>
+#include<ctype.h>
+#include<stdlib.h>
+
 #define MAX 100
 #define LET 26
 #define UTL 32
 
-int Strlen(const char* string){
-    
-    int len = 0;
-    while (*string != '\0'){
-        len++;
-        string++;
-    }
-    return len;    
-}
 
-int Strcmp(const char* string1, const char* string2){
 
-   int len_string1 = Strlen(string1);
-   int len_string2 = Strlen(string2);
-
-   if((len_string1 - len_string2) == 0){
-      for(int i = 0; i < len_string1; i++){
-         if(*(string1+i) == *(string2+i))
-            len_string2--;         
-      }
-      if(len_string2 == 0)
-         return 0;
-      else
-         return 1;
-   } else{
-      return 1;
-      }
-}
-
-int isDigit(int ch){
-   if(ch >= 48 && ch <= 57)
-      return 1;
-   return 0;
-}
-
-int AtoI(const char* str){ //changes number stored in a string to integer
+int _strtoi(const char* str){ //changes number stored in a string to integer
    int res = 0;
    char *ptr = (char*)str;
 
    while (*ptr != '\0') {
-      if (isDigit(*ptr)) {
+      if (isdigit(*ptr)) {
          // Integer part
          res *= 10; // Shift the previous digits to the left
          res += *ptr - 48; // Add the new one
@@ -54,112 +25,146 @@ int AtoI(const char* str){ //changes number stored in a string to integer
    return res;
 }
 
-int toUpper(int ch){
+void encrypt(char* string, int rotValue){
 
-   int upper;
-   if(ch >= 97 && ch <= 122){
-      upper = ch-32;
-   } else {
-      upper = ch;
-   }
-   return upper;
-}
-
-int isLower(int ch){
-   if(ch >= 97 && ch <= 122)
-      return 1;
-   return 0 ;
-}
-
-void Rot(char* string, char* mode, char* rotval){
-
-    auto void encode();
-    auto void decode();
-
-    int rotValue;
-    char outcome[MAX], rotstr[5];
-    if(Strcmp(rotval, "--allpos")){
-        rotstr[0] = rotval[5];
-        rotstr[1] = rotval[6];
-        rotValue = AtoI(rotstr);
-    }
-    if(Strcmp(mode, "--encrypt") == 0){
-        if(!Strcmp(rotval, "--allpos")){
-            for(rotValue = 1; rotValue < 26; rotValue++){
-                encode();
-                printf("%s\n", outcome);
-            } 
-        }else{
-            encode();
-            printf("%s\n", outcome);
-        }
-    } else if(Strcmp(mode, "--decrypt") == 0){
-        if(!Strcmp(rotval, "--allpos")){
-            for(rotValue = 1; rotValue < 26; rotValue++){
-                decode();
-                printf("%s\n", outcome);
-            } 
-        }else{
-            decode();
-            printf("%s\n", outcome);
-        }
-    }
-    void encode(){
-        
-        int i;
-        for (i = 0; i < Strlen(string); i++){
-            // *(arrName+i) is same as arrName[i] //[The name of the array is the pointer to first element of the array]
-            // arrName == &arrName[0] and *arrName == arrName[0] 
-            // *(arrName) gives the value of the first element, so to retrieve all the values write *(arrName+i) and increment i
-            // till i is lesser than length of the arrName-1 (possible for both array and string literal) 
-            // or until *(arrName+i) 'or' arrName[i] is '\0'[NULL] character (this method is only for string literal)
+	int i;
+	char* outcome = (char*)calloc(1, strlen(string)+1);
+        for (i = 0; i < strlen(string); i++){
             if((*(string+i) >=32 && *(string+i) <=64) || (*(string+i) >=91 && *(string+i) <=96) || (*(string+i) >=123 && *(string+i) <=126)){
                 *(outcome+i) = *(string+i);
-            }else if(toUpper(*(string+i)) >=65 && toUpper(*(string+i)) <=90){
-                *(outcome+i) = (toUpper(*(string+i))+rotValue);   
+            }else if(toupper(*(string+i)) >=65 && toupper(*(string+i)) <=90){
+                *(outcome+i) = (toupper(*(string+i))+rotValue);   
                 if(*(outcome+i) > 90)
                     *(outcome+i) = *(outcome+i)-LET;
             }
-            if(isLower(*(string+i))){
+            if(islower(*(string+i))){
                 *(outcome+i) = *(outcome+i)+UTL;
             }
         }
         *(outcome+i) = '\0';
 
-    }
-    void decode(){
+	puts(outcome);
+	free(outcome);
 
-        int i;
-        for (i = 0; i < Strlen(string); i++){
-            if((*(string+i) >=32 && *(string+i) <=64) || (*(string+i) >=91 && *(string+i) <=96) || (*(string+i) >=123 && *(string+i) <=126)){
-                *(outcome+i) = *(string+i);
-            }else if((toUpper(*(string+i)) >=65 && toUpper(*(string+i)) <=90)){
-                *(outcome+i) = (toUpper(*(string+i))-rotValue);   
-                if(*(outcome+i) < 65)
-                    *(outcome+i) = *(outcome+i)+LET;       
-            }
-            if(isLower(*(string+i))){
-                *(outcome+i) = *(outcome+i)+UTL;
-            }  
+}
+void decrypt(char* string, int rotValue){
+        
+    int i;
+    char* outcome = (char*)calloc(1, strlen(string)+1);
+    for (i = 0; i < strlen(string); i++){
+        if((*(string+i) >=32 && *(string+i) <=64) || (*(string+i) >=91 && *(string+i) <=96) || (*(string+i) >=123 && *(string+i) <=126)){
+            *(outcome+i) = *(string+i);
+        }else if((toupper(*(string+i)) >=65 && toupper(*(string+i)) <=90)){
+            *(outcome+i) = (toupper(*(string+i))-rotValue);   
+            if(*(outcome+i) < 65)
+                 *(outcome+i) = *(outcome+i)+LET;       
         }
-        *(outcome+i) = '\0';
+        if(islower(*(string+i))){
+            *(outcome+i) = *(outcome+i)+UTL;
+        }  
     }
+    *(outcome+i) = '\0';
+   
+    puts(outcome);
+    free(outcome);
+}
+void help(){
+    
+     fprintf(stdout, "Usage: rot -s <string> -m (enc|dec) -r <int>\
+     \nOptions:-\n\n\t-s  set data string\
+     \n\t-m  set mode to encrypt or decrypt the message\
+     \n\t-r  set rotate value [-1 to print all possibilities]\n");
+}
+
+int arg_validate(char* arg){
+    if(arg == NULL || 
+        !strcmp(arg, "-s") ||
+        !strcmp(arg, "-m") ||
+        !strcmp(arg, "-r")){
+            return -1;
+        }
+    return 0;
 }
 
 int main(int argc, char*argv[]){
     
-    if(argc == 2 && (Strcmp(argv[1], "--help")||Strcmp(argv[1], "-h"))){
-        fprintf(stdout, "\nUsage: %s <string> --<mode> --<rotval>\n|CLI options|:-\
-        \n\t<data> = A plaintext or ciphertext.\
-        \n\t<mode>:\n\t\t--encrypt = Encrypts the string\n\t\t--decrypt = Decrypts the string\
-        \n\t<rotval>:\n\t\t--rot<int> = Rotates according to given value.|<int> should be between 1-25|\
-        \n\t\t--allpos = prints all possibilities by rotating the values between 1-25.\n", argv[0]);
-    }else if(argc == 4){
-        Rot(argv[1], argv[2], argv[3]);
+    int stridx, modidx, rotidx, i;
+    if(argc == 1 || (argc == 2 && !strcmp(argv[1], "-h"))){
+	help();
+    }else if(argc == 7){
+	
+        for(i = 0; i < argc; i++){
+            if(!strcmp(argv[i], "-s")){
+
+                if(arg_validate(argv[i+1]) == -1){
+                    fprintf(stderr, "DataError: something went wrong.");
+		    exit(1);
+                } else {
+                    stridx = i+1;
+                }
+                break;
+            } else{
+                continue;
+            }
+        }
+        
+        for(i = 0; i < argc; i++){
+            if(!strcmp(argv[i], "-m")){
+
+                if(strcmp(argv[i+1], "enc") && strcmp(argv[i+1], "dec")){
+                    fprintf(stderr, "DataError: something went wrong.");
+		    exit(1);
+                } else {
+                    modidx = i+1;
+                }
+                break;
+            } else{
+                continue;
+            }
+        }
+        for(i = 0; i < argc; i++){
+            if(!strcmp(argv[i], "-r")){
+
+                if(arg_validate(argv[i+1]) == -1){
+                    fprintf(stderr, "ValueError: invalid rotate value.");
+		    exit(1);
+                } else {
+                    rotidx = i+1;
+                }
+                break;
+            } else{
+                continue;
+            }
+        }
+		
+    	int rotValue;
+    	if(strcmp(argv[rotidx], "-1")){
+            int d = _strtoi(argv[rotidx]);
+	    if(d >= 0 && d < LET) 
+                rotValue = d;
+	    else exit(1);
+        }
+        
+	if(!strcmp(argv[modidx], "enc")){
+	    if(!strcmp(argv[rotidx], "-1")){
+                for(rotValue = 1; rotValue < 26; rotValue++){
+                    encrypt(argv[stridx], rotValue);
+                } 
+            }else encrypt(argv[stridx], rotValue);
+
+	} else if(!strcmp(argv[modidx], "dec")){
+	    if(!strcmp(argv[rotidx], "-1")){
+                for(rotValue = 1; rotValue < 26; rotValue++){
+                    decrypt(argv[stridx], rotValue);
+                } 
+            }else decrypt(argv[stridx], rotValue);
+	    
+	}
+
     } else{
-        fprintf(stderr, "\nUsage: %s <string> --<mode> --<rotval>\
+     	fprintf(stdout, "Usage: %s -s <string> -m (enc|dec) -r <int>\
         \nFor more, check help section:\
-        \n    %s --help 'or' -h", argv[0], argv[0]);
+        \n    %s -h", argv[0], argv[0]);
         return 1;
     }
 

@@ -5,30 +5,26 @@
 Compile:
 
 ```powershell
-gcc rotcipher.c -o rc
+gcc rotcipher.c -o rot
 ```
 ---
 Ask For Help:
 ```powershell
-rc -h 'or' rc --help
+rot -h
 ```
 Output:
 ```
+Usage: rot -s <string> -m (enc|dec) -r <int>     
 
-Usage: rc.exe <string> --<mode> --<rotval>
-|CLI options|:-
-        <data> = A plaintext or ciphertext.
-        <mode>:
-                --encrypt = Encrypts the string
-                --decrypt = Decrypts the string
-        <rotval>:
-                --rot<int> = Rotates according to given value.|<int> should be between 1-25|
-                --allpos = prints all possibilities by rotating the values between 1-25.
+Options:-
+    -s  set data string     
+    -m  set mode to encrypt or decrypt the message     
+    -r  set rotate value [-1 to print all possibilities]
 ```
 ---
 ## Encryption:
 ```powershell
-rc "Hack Teh World!" --encrypt --rot10
+rot -s "Hack Teh World!" -m enc -r 10
 ```
 Output:
 ```
@@ -37,7 +33,7 @@ Rkmu Dor Gybvn!
 ---
 ## Decryption:
 ```powershell
-vc "Rkmu Dor Gybvn!" --decrypt --rot10 
+rot -s "Rkmu Dor Gybvn!" -m dec -r 10 
 ```
 Output:
 ```
